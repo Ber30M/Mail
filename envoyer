@@ -1,0 +1,34 @@
+import smtplib
+from email.mime.text import MIMEText as MIMEText
+from email.mime.multipart import MIMEMultipart
+
+def send_email(sender_email, sender_password, receiver_email, subject, body):
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+
+    message.attach(MIMEText(body, "plain"))
+
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.send_message(message)
+        print("Email sent successfully to", receiver_email)
+        server.quit()
+    except Exception as e:
+        print("Error sending email to", receiver_email)
+        print(e)
+
+# Paramètres de l'expéditeur
+sender_email = "makoberobertrand@gmail.com"
+sender_password = "1997Jesus2022"
+
+# Paramètres du destinataire et de l'email
+receiver_email = "makoberobertrand@gmail.com"
+subject = "Trial"
+body = "Hello, this is a trial of a mail scheduling"
+
+# Envoi de l'email
+send_email(sender_email, sender_password, receiver_email, subject, body)
